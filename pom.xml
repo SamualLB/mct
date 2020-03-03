@@ -23,4 +23,19 @@
         <maven.compiler.source>13</maven.compiler.source>
         <maven.compiler.target>13</maven.compiler.target>
     </properties>
+    <build>
+	<plugins>
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <configuration>
+		    <archive>
+		        <manifest>
+			    <mainClass>uk.ac.keele.csc20041.mct.Application</mainClass>
+		        </manifest>
+		    </archive>
+	        </configuration>
+	    </plugin>
+	</plugins>
+    </build>
 </project>
