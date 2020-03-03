@@ -32,14 +32,14 @@ public class Exam {
 
     /**
      * Build an Exam from a filename
-     * 
+     *
      * @param fileName The CSV file with the questions
      * @throws FileNotFoundException Exam file does not exist
      * @throws IOException Error reading the file
      */
     Exam(String fileName) throws FileNotFoundException, IOException {
         FileReader reader = resolveFileName(fileName);
-        
+
         CSVParser parser = CSVFormat.DEFAULT
                 .withHeader("question", "a", "b", "c", "d", "answer")
                 .parse(reader);
