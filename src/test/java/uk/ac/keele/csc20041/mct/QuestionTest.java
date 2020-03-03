@@ -14,8 +14,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
- *
- * @author Sam
+ * @author Samual
  */
 public class QuestionTest {
     private static final String CSV_TEXT = "Test Question 1,A1,A2,A3,A4,A\r\nTest Question 2,A1,A2,A3,A4,B";
