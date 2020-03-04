@@ -1,6 +1,6 @@
 package uk.ac.keele.csc20041.mct;
 
-import org.apache.commons.csv.CSVRecord;
+import org.json.simple.JSONObject;
 
 /**
  * A question which is given to the user to answer
@@ -17,33 +17,14 @@ public class Question {
     private final String answerD;
     private final char correctAnswer;
     private Character selectedAnswer;
-
-    /**
-     * Create a Question from a CSV
-     * 
-     * @param r An individual CSV record, can be mapped or not
-     */
-    protected Question(CSVRecord r) {
-        if (r.isMapped("question")
-                && r.isMapped("a")
-                && r.isMapped("b")
-                && r.isMapped("c")
-                && r.isMapped("d")
-                && r.isMapped("answer")) {
-            this.text = r.get("question");
-            this.answerA = r.get("a");
-            this.answerB = r.get("b");
-            this.answerC = r.get("c");
-            this.answerD = r.get("d");
-            this.correctAnswer = r.get("answer").charAt(0);
-        } else {
-            this.text = r.get(0);
-            this.answerA = r.get(1);
-            this.answerB = r.get(2);
-            this.answerC = r.get(3);
-            this.answerD = r.get(4);
-            this.correctAnswer = r.get(5).charAt(0);
-        }
+    
+    protected Question(JSONObject json) {
+        this.text = (String) json.get("question");
+        this.answerA = (String) json.get("a");
+        this.answerB = (String) json.get("b");
+        this.answerC = (String) json.get("c");
+        this.answerD = (String) json.get("d");
+        this.correctAnswer = ((String) json.get("answer")).charAt(0);
         this.selectedAnswer = null;
     }
 

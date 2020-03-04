@@ -1,0 +1,86 @@
+{
+  "time_limit": 600,
+  "no_questions": 5,
+  "questions": [
+    {
+      "question": "How many children does a binary tree have?",
+      "a": "2",
+      "b": "Any number of children",
+      "c": "0 or 1 or 2",
+      "d": "0 or 1",
+      "answer": "C"
+    },
+    {
+      "question": "What is/are the disadvantages of implementing tree using normal arrays?",
+      "a": "Difficulty in knowing children nodes of a node",
+      "b": "Difficulty in finding the parent of a node",
+      "c": "Have to know the maximum number of nodes possible before creation of trees",
+      "d": "difficult to implement",
+      "answer": "C"
+    },
+    {
+      "question": "What is a hash table?",
+      "a": "A structure that maps values to keys",
+      "b": "A structure that maps keys to values",
+      "c": "A structure used for storage",
+      "d": "A structure used to implement stacks and queues",
+      "answer": "B"
+    },
+    {
+      "question": "What does ‘stack underflow’ refer to?",
+      "a": "Accessing item from an undefined stack",
+      "b": "Adding items to a full stack",
+      "c": "Removing items from an empty stack",
+      "d": "Index out of bounds exception",
+      "answer": "D"
+    },
+    {
+      "question": "What is a bit array?",
+      "a": "Data structure for representing arrays of records",
+      "b": "Data structure that compactly stores bits",
+      "c": "An array in which most of the elements have the same value",
+      "d": "Array in which elements are not present in continuous locations",
+      "answer": "B"
+    },
+    {
+      "question": "Why is implementation of stack operations on queues not feasible for a large dataset (Assume the number of elements in the stack to be n)?",
+      "a": "Because of its time complexity O(n)",
+      "b": "Because of its time complexity O(log(n))",
+      "c": "Extra memory is not required",
+      "d": "There are no problems",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following statements for a simple graph is correct?",
+      "a": "Every path is a trail",
+      "b": "Every trail is a path",
+      "c": "Every trail is a path as well as every path is a trail",
+      "d": "Path and trail have no relation",
+      "answer": "A"
+    },
+    {
+      "question": "The number of elements in the adjacency matrix of a graph having 7 vertices is...",
+      "a": "7",
+      "b": "14",
+      "c": "36",
+      "d": "49",
+      "answer": "D"
+    },
+    {
+      "question": "Which of these adjacency matrices represents a simple graph?",
+      "a": "[ [1, 0, 0], [0, 1, 0], [0, 1, 1] ]",
+      "b": "[ [1, 1, 1], [1, 1, 1], [1, 1, 1]",
+      "c": "[ [0, 0, 1], [0, 0, 0], [0, 0, 1] ]",
+      "d": "[ [0, 0, 1], [1, 0, 1], [1, 0, 0] ]",
+      "answer": "D"
+    },
+    {
+      "question": "Express -15 as a 6-bit signed binary number",
+      "a": "001111",
+      "b": "101111",
+      "c": "101110",
+      "d": "001110",
+      "answer": "B"
+    }
+  ]
+}

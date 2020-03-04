@@ -11,17 +11,19 @@ import org.junit.Test;
  * @author sam
  */
 public class ExamTest {
-    private static final String QUESTIONS_CSV = "Test Question 1,A1,A2,A3,A4,A\r\nTest Question 2,A1,A2,A3,A4,B";
+    private static final String TEST_JSON = "{\"time_limit\": 60,\"no_questions\": 1,\"questions\": [{\"question\": \"Test Question 1\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"A\"},{\"question\": \"Test Question 2\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"B\"}]}";
 
     @Test
     public void testFromFileName() throws IOException {
         File tempFile = File.createTempFile("mct_test", null);
         FileWriter writer = new FileWriter(tempFile);
-        writer.write(QUESTIONS_CSV);
+        writer.write(TEST_JSON);
         writer.close();
         Exam instance = new Exam(tempFile.getPath());
         assertNotNull("Exam created", instance);
         assertEquals("2 questions", 2, instance.getQuestions().size());
+        assertEquals("Time limit parsed", 60, instance.getTimeLimit());
+        assertEquals("Number of questions parsed", 1, instance.getNoOfQuestions());
         tempFile.delete();
     }
 }

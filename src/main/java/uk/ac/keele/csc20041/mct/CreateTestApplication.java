@@ -13,12 +13,13 @@ import java.io.IOException;
  */
 public class CreateTestApplication {
     public static void main(String[] args) {
-        if (args.length <= 0) {
+        if (args.length < 2) {
             printHelp();
             return;
         }
         try {
             Exam exam = new Exam(args[0]);
+            Test test = exam.generateTest(args[1]);
             System.out.println("Creating test from exam...");
         } catch (FileNotFoundException ex) {
             System.err.println("Cannot find file \"" + args[0] + "\"");
@@ -26,7 +27,7 @@ public class CreateTestApplication {
             System.err.println("System error. " + ex.getLocalizedMessage());
         }
     }
-    
+
     public static void printHelp() {
         System.out.println("Create help...");
     }
