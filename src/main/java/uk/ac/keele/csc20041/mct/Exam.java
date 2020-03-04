@@ -4,53 +4,131 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+import java.util.Random;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  * A collection of all the questions.
  *
  * Can be used to generate a Test.
  *
- * TODO: time limit and number of questions for generated test
- *
  * @author Samual
  */
 public class Exam {
     private final ArrayList<Question> questions;
-    //private final int timeLimit;
-    //private final int noQuestions;
+    private final int timeLimit;
+    private final int noQuestions;
 
+    /**
+     * Looks for the given file, or with the addition of the 'json' extension
+     *
+     * @param path Path of the file name
+     * @return Returns a FileReader over the file found
+     * @throws FileNotFoundException When the file does not exist
+     */
     private static FileReader resolveFileName(String path) throws FileNotFoundException {
         try {
             return new FileReader(path);
         } catch (FileNotFoundException e) {
-            return new FileReader(path + ".csv");
+            return new FileReader(path + ".json");
         }
     }
 
     /**
-     * Build an Exam from a filename
+     * Generate from a file name
      *
-     * @param fileName The CSV file with the questions
-     * @throws FileNotFoundException Exam file does not exist
+     * This can be called straight from the arguments, it looks for the file
+     * with the file name with or without the 'json' extension
+     *
+     * @param fileName Name of the file to parse
+     * @throws FileNotFoundException When the file does not exist
      * @throws IOException Error reading the file
      */
     Exam(String fileName) throws FileNotFoundException, IOException {
-        FileReader reader = resolveFileName(fileName);
+        JSONObject json = (JSONObject) JSONValue.parse(resolveFileName(fileName));
 
-        CSVParser parser = CSVFormat.DEFAULT
-                .withHeader("question", "a", "b", "c", "d", "answer")
-                .parse(reader);
+        this.timeLimit = (int) (long) json.get("time_limit");
+        this.noQuestions = (int) (long) json.get("no_questions");
 
-        questions = new ArrayList();
-        for (CSVRecord record : parser) {
-            questions.add(new Question(record));
+        this.questions = new ArrayList();
+        for (Object val : (JSONArray) json.get("questions")) {
+            this.questions.add(new Question((JSONObject) val));
         }
     }
+    
+    Exam(ArrayList<Question> questions, int timeLimit, int noQuestions) {
+        this.questions = questions;
+        this.timeLimit = timeLimit;
+        this.noQuestions = noQuestions;
+    }
 
+    /**
+     * All of the questions in the exam
+     *
+     * @return ArrayList of Question for the pool of questions
+     */
     public ArrayList<Question> getQuestions() {
         return this.questions;
+    }
+
+    /**
+     * @return The number of seconds for the test
+     */
+    public int getTimeLimit() {
+        return this.timeLimit;
+    }
+
+    /**
+     * Not the number of questions in here, only the number that should be
+     * generated 
+     *
+     * @return The number of questions that should be in the test
+     */
+    public int getNoOfQuestions() {
+        return this.noQuestions;
+    }
+    
+    /**
+     * Generate a randomised Test
+     * 
+     * @param name Name of the test
+     * @return Test with the same properties and a randomised subset of questions
+     */
+    public Test generateTest(String name) {
+        return new Test(name, generateSample(), this.timeLimit);
+    }
+
+    /**
+     * Generate a randomised subset of the questions
+     * 
+     * Adapted from https://www.javamex.com/tutorials/random_numbers/random_sample.shtml
+     *
+     * @return The ArrayList of the correct size
+     */
+    private ArrayList<Question> generateSample(Random r) {
+        ArrayList<Question> newList = new ArrayList(this.noQuestions);
+        int nPicked = 0, i = 0, nLeft = this.noQuestions;
+        int nSamplesNeeded = this.noQuestions;
+        while (nSamplesNeeded > 0) {
+            int rand = r.nextInt(nLeft);
+            if (rand < nSamplesNeeded) {
+                newList.add(nPicked++, this.questions.get(i));
+                nSamplesNeeded--;
+            }
+            nLeft--;
+            i++;
+        }
+        return newList;
+    }
+    
+    /**
+     * Unseeded random
+     * 
+     * @return ArrayList of correct size
+     */
+    private ArrayList<Question> generateSample() {
+        return generateSample(new Random());
     }
 }

@@ -1,13 +1,9 @@
 package uk.ac.keele.csc20041.mct;
 
-import java.io.IOException;
-import java.io.StringReader;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -17,60 +13,23 @@ import org.junit.Test;
  * @author Samual
  */
 public class QuestionTest {
-    private static final String CSV_TEXT = "Test Question 1,A1,A2,A3,A4,A\r\nTest Question 2,A1,A2,A3,A4,B";
-    
+    private static final String JSON_TEXT = "{\"question\": \"Test Question 1\", \"a\": \"A1\", \"b\": \"A2\", \"c\": \"A3\", \"d\": \"A4\", \"answer\": \"A\"}";
+
     private static Question build() {
         return new Question("Test Question 1", "A1", "A2", "A3", "A4", 'A');
     }
 
     @Test
-    public void testFromParserWithHeader() throws IOException {
-        CSVParser parser = CSVFormat.DEFAULT
-                .withHeader("question", "a", "b", "c", "d", "answer")
-                .parse(new StringReader(CSV_TEXT));
-        Question[] qArr = new Question[2];
-        int i = 0;
-        for (CSVRecord r : parser) {
-            qArr[i] = new Question(r);
-            i++;
-        }
-        assertEquals("Question 1 text parsed", "Test Question 1", qArr[0].getQuestion());
-        assertEquals("Question 1 answers parsed", "A1", qArr[0].getAnswerA());
-        assertEquals("Question 1 answers parsed", "A2", qArr[0].getAnswerB());
-        assertEquals("Question 1 answers parsed", "A3", qArr[0].getAnswerC());
-        assertEquals("Question 1 answers parsed", "A4", qArr[0].getAnswerD());
-        assertEquals("Question 1 answer parsed", 'A', qArr[0].getCorrectAnswer());
-        assertEquals("Question 2 text parsed", "Test Question 2", qArr[1].getQuestion());
-        assertEquals("Question 2 answers parsed", "A1", qArr[1].getAnswerA());
-        assertEquals("Question 2 answers parsed", "A2", qArr[1].getAnswerB());
-        assertEquals("Question 2 answers parsed", "A3", qArr[1].getAnswerC());
-        assertEquals("Question 2 answers parsed", "A4", qArr[1].getAnswerD());
-        assertEquals("Question 2 answer parsed", 'B', qArr[1].getCorrectAnswer());
+    public void testFromJSON() {
+        Question q = new Question((JSONObject) JSONValue.parse(JSON_TEXT));
+        assertEquals("Question 1 text parsed", "Test Question 1", q.getQuestion());
+        assertEquals("Question 1 answers parsed", "A1", q.getAnswerA());
+        assertEquals("Question 1 answers parsed", "A2", q.getAnswerB());
+        assertEquals("Question 1 answers parsed", "A3", q.getAnswerC());
+        assertEquals("Question 1 answers parsed", "A4", q.getAnswerD());
+        assertEquals("Question 1 answer parsed", 'A', q.getCorrectAnswer());
     }
-    
-    @Test
-    public void testFromParserWithoutHeader() throws IOException {
-        CSVParser parser = CSVFormat.DEFAULT.parse(new StringReader(CSV_TEXT));
-        Question[] qArr = new Question[2];
-        int i = 0;
-        for (CSVRecord r : parser) {
-            qArr[i] = new Question(r);
-            i++;
-        }
-        assertEquals("Question 1 text parsed", "Test Question 1", qArr[0].getQuestion());
-        assertEquals("Question 1 answers parsed", "A1", qArr[0].getAnswerA());
-        assertEquals("Question 1 answers parsed", "A2", qArr[0].getAnswerB());
-        assertEquals("Question 1 answers parsed", "A3", qArr[0].getAnswerC());
-        assertEquals("Question 1 answers parsed", "A4", qArr[0].getAnswerD());
-        assertEquals("Question 1 answer parsed", 'A', qArr[0].getCorrectAnswer());
-        assertEquals("Question 2 text parsed", "Test Question 2", qArr[1].getQuestion());
-        assertEquals("Question 2 answers parsed", "A1", qArr[1].getAnswerA());
-        assertEquals("Question 2 answers parsed", "A2", qArr[1].getAnswerB());
-        assertEquals("Question 2 answers parsed", "A3", qArr[1].getAnswerC());
-        assertEquals("Question 2 answers parsed", "A4", qArr[1].getAnswerD());
-        assertEquals("Question 2 answer parsed", 'B', qArr[1].getCorrectAnswer());
-    }
-    
+
     @Test
     public void testCanSetValidAnswer() {
         Question instance = build();
@@ -94,7 +53,7 @@ public class QuestionTest {
         instance.setAnswer(null);
         assertNull("Changed to null", instance.getSelectedAnswer());
     }
-    
+
     @Test
     public void testThrowsOnInvalidAnswerSet() {
         Question instance = build();
@@ -129,7 +88,7 @@ public class QuestionTest {
             assertEquals("Exception message thrown", "Invalid answer (e)", ex.getMessage());
         }
     }
-    
+
     @Test
     public void testReportCorrect() {
         Question instance = build();
