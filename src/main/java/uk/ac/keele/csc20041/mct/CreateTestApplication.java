@@ -20,7 +20,14 @@ public class CreateTestApplication {
         try {
             Exam exam = new Exam(args[0]);
             Test test = exam.generateTest(args[1]);
-            System.out.println("Creating test from exam...");
+            if (!test.saveToFile()) {
+                System.err.println("Test already exists, cannot overwrite");
+                return;
+            }
+            System.out.println("========================================================================");
+            System.out.println("Created test: " + test.getName());
+            System.out.println("The passcode for the test is: " + test.getPasscode());
+            System.out.println("========================================================================");
         } catch (FileNotFoundException ex) {
             System.err.println("Cannot find file \"" + args[0] + "\"");
         } catch (IOException ex) {

@@ -3,6 +3,7 @@ package uk.ac.keele.csc20041.mct;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -12,6 +13,13 @@ import org.junit.Test;
  */
 public class ExamTest {
     private static final String TEST_JSON = "{\"time_limit\": 60,\"no_questions\": 1,\"questions\": [{\"question\": \"Test Question 1\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"A\"},{\"question\": \"Test Question 2\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"B\"}]}";
+
+    private static Exam build() {
+        ArrayList<Question> qs = new ArrayList(2);
+        qs.add(new Question("Test Question 1", "A1", "A2", "A3", "A4", 'A'));
+        qs.add(new Question("Test Question 2", "A1", "A2", "A3", "A4", 'B'));
+        return new Exam(qs, 60, 1);
+    }
 
     @Test
     public void testFromFileName() throws IOException {
@@ -25,5 +33,15 @@ public class ExamTest {
         assertEquals("Time limit parsed", 60, instance.getTimeLimit());
         assertEquals("Number of questions parsed", 1, instance.getNoOfQuestions());
         tempFile.delete();
+    }
+    
+    @Test
+    public void testGeneratesTest() {
+        Exam ins = build();
+        uk.ac.keele.csc20041.mct.Test test = ins.generateTest("Test Test!");
+        assertNotNull("Test Generated", test);
+        assertEquals("Name given", "Test Test!", test.getName());
+        assertEquals("1 question", 1, test.getQuestions().size());
+        assertEquals("Time limit given", 60, test.getTimeLimit());
     }
 }

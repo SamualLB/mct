@@ -1,6 +1,10 @@
 package uk.ac.keele.csc20041.mct;
 
+import java.io.IOException;
+import java.io.Writer;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+import org.json.simple.JSONValue;
 
 /**
  * A question which is given to the user to answer
@@ -9,7 +13,7 @@ import org.json.simple.JSONObject;
  * 
  * @author Samual
  */
-public class Question {
+public class Question implements JSONStreamAware {
     private final String text;
     private final String answerA;
     private final String answerB;
@@ -116,5 +120,17 @@ public class Question {
             throw new IllegalArgumentException("Invalid answer (" + newAnswer + ')');
 
         this.selectedAnswer = newAnswer;
+    }
+
+    @Override
+    public void writeJSONString(Writer out) throws IOException {
+        JSONObject obj = new JSONObject();
+        obj.put("question", this.text);
+        obj.put("a", this.answerA);
+        obj.put("b", this.answerB);
+        obj.put("c", this.answerC);
+        obj.put("d", this.answerD);
+        obj.put("answer", "" + this.correctAnswer);
+        JSONValue.writeJSONString(obj, out);
     }
 }

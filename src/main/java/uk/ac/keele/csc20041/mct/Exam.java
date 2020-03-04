@@ -57,6 +57,12 @@ public class Exam {
             this.questions.add(new Question((JSONObject) val));
         }
     }
+    
+    Exam(ArrayList<Question> questions, int timeLimit, int noQuestions) {
+        this.questions = questions;
+        this.timeLimit = timeLimit;
+        this.noQuestions = noQuestions;
+    }
 
     /**
      * All of the questions in the exam
