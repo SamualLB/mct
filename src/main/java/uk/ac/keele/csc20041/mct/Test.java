@@ -66,20 +66,16 @@ public class Test implements JSONStreamAware {
      * Save the test to the file system so that it can be run
      *
      * @return If it was saved successfully
+     * @throws java.io.IOException Error writing to file
      */
-    public boolean saveToFile() {
-        try {
-            File file = new File(this.name + ".json");
-            if (!file.createNewFile())
-                return false;
-            FileWriter writer = new FileWriter(file);
-            writeJSONString(writer);
-            System.out.println("Wrote to file " + file.toString());
-            writer.close();
-            return true;
-        } catch (IOException e) {
+    public boolean saveToFile() throws IOException {
+        File file = new File(this.name + ".json");
+        if (!file.createNewFile())
             return false;
-        }
+        FileWriter writer = new FileWriter(file);
+        writeJSONString(writer);
+        writer.close();
+        return true;
     }
 
     @Override
