@@ -22,12 +22,29 @@ public class ExamTest {
     }
 
     @Test
-    public void testFromFileName() throws IOException {
-        File tempFile = File.createTempFile("mct_test", null);
+    public void testFromFullFileName() throws IOException {
+        File tempFile = File.createTempFile("mct_test", ".mcte");
+        
         FileWriter writer = new FileWriter(tempFile);
         writer.write(TEST_JSON);
         writer.close();
         Exam instance = new Exam(tempFile.getPath());
+        assertNotNull("Exam created", instance);
+        assertEquals("2 questions", 2, instance.getQuestions().size());
+        assertEquals("Time limit parsed", 60, instance.getTimeLimit());
+        assertEquals("Number of questions parsed", 1, instance.getNoOfQuestions());
+        tempFile.delete();
+    }
+    
+    @Test
+    public void testFromMinimalFileName() throws IOException {
+        File tempFile = File.createTempFile("mct_test", ".mcte");
+        String path = tempFile.getPath();
+        String pathWithoutExtension = path.substring(0, path.lastIndexOf('.'));
+        FileWriter writer = new FileWriter(tempFile);
+        writer.write(TEST_JSON);
+        writer.close();
+        Exam instance = new Exam(pathWithoutExtension);
         assertNotNull("Exam created", instance);
         assertEquals("2 questions", 2, instance.getQuestions().size());
         assertEquals("Time limit parsed", 60, instance.getTimeLimit());
