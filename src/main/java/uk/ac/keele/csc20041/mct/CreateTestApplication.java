@@ -18,12 +18,15 @@ public class CreateTestApplication {
             return;
         }
         try {
+            //Creates new exam an test objects
             Exam exam = new Exam(args[0]);
             Test test = exam.generateTest(args[1]);
+            
             if (!test.saveToFile()) {
                 System.err.println("Test already exists, cannot overwrite");
                 return;
             }
+            
             System.out.println("========================================================================");
             System.out.println("Created test: " + test.getName());
             System.out.println("The passcode for the test is: " + test.getPasscode());
