@@ -22,6 +22,7 @@ public class Test implements JSONStreamAware {
     
     private static final String PASSCODE_STRING = "0123456789";
     private static final int PASSCODE_LENGTH = 6;
+    public static final String FILE_EXTENSION = ".mctt"; // MCT Test
 
     /**
      * Create a new Test with the set properties
@@ -69,7 +70,7 @@ public class Test implements JSONStreamAware {
      * @throws java.io.IOException Error writing to file
      */
     public boolean saveToFile() throws IOException {
-        File file = new File(this.name + ".json");
+        File file = new File(this.name + FILE_EXTENSION);
         if (!file.createNewFile())
             return false;
         FileWriter writer = new FileWriter(file);

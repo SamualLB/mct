@@ -17,6 +17,8 @@ import org.json.simple.JSONValue;
  * @author Samual
  */
 public class Exam {
+    public static final String FILE_EXTENSION = ".mcte"; // MCT Exam
+
     private final ArrayList<Question> questions;
     private final int timeLimit;
     private final int noQuestions;
@@ -32,7 +34,7 @@ public class Exam {
         try {
             return new FileReader(path);
         } catch (FileNotFoundException e) {
-            return new FileReader(path + ".json");
+            return new FileReader(path + FILE_EXTENSION);
         }
     }
 
