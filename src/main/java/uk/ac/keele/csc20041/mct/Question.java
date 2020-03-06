@@ -22,6 +22,7 @@ public class Question implements JSONStreamAware {
     private final char correctAnswer;
     private Character selectedAnswer;
     
+    //Gets the details of a question
     protected Question(JSONObject json) {
         this.text = (String) json.get("question");
         this.answerA = (String) json.get("a");
@@ -48,6 +49,7 @@ public class Question implements JSONStreamAware {
         this.selectedAnswer = null;
     }
 
+    //Question with an answer that has been selected
     public Question(
             String ques,
             String ansA,
@@ -71,10 +73,12 @@ public class Question implements JSONStreamAware {
         return this.correctAnswer == this.selectedAnswer;
     }
 
+    //Get method for retrieving the question text
     public String getQuestion() {
         return this.text;
     }
 
+    //Get methods for retrieving each answer (A, B, C or D)
     public String getAnswerA() {
         return this.answerA;
     }
@@ -91,6 +95,7 @@ public class Question implements JSONStreamAware {
         return this.answerD;
     }
     
+    //Get methods for retrieving the correct and selected answers)
     public char getCorrectAnswer() {
         return this.correctAnswer;
     }
@@ -121,6 +126,7 @@ public class Question implements JSONStreamAware {
 
         this.selectedAnswer = newAnswer;
     }
+
 
     @Override
     public void writeJSONString(Writer out) throws IOException {

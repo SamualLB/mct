@@ -18,10 +18,11 @@ public class CreateTestApplication {
             return;
         }
         try {
-            //Creates new exam an test objects
+            //Creates new exam and test objects
             Exam exam = new Exam(args[0]);
             Test test = exam.generateTest(args[1]);
             
+            //If the file is already present
             if (!test.saveToFile()) {
                 System.err.println("Test already exists, cannot overwrite");
                 return;
@@ -31,6 +32,8 @@ public class CreateTestApplication {
             System.out.println("Created test: " + test.getName());
             System.out.println("The passcode for the test is: " + test.getPasscode());
             System.out.println("========================================================================");
+            
+            //Catching exceptions
         } catch (FileNotFoundException ex) {
             System.err.println("Cannot find file \"" + args[0] + "\"");
         } catch (IOException ex) {

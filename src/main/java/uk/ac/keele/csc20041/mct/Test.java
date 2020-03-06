@@ -38,6 +38,7 @@ public class Test implements JSONStreamAware {
         this.passcode = generatePasscode();
     }
 
+    //Get method to retrieve name
     public String getName() {
         return this.name;
     }
@@ -46,14 +47,17 @@ public class Test implements JSONStreamAware {
         return this.questions;
     }
 
+    //Get method to retrieve timelimit
     public int getTimeLimit() {
         return this.timeLimit;
     }
 
+    //Get method to retrieve passcode
     protected String getPasscode() {
         return this.passcode;
     }
 
+    //Generates the passcode
     private String generatePasscode() {
         Random r = new Random();
         StringBuilder b = new StringBuilder(PASSCODE_LENGTH);
