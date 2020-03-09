@@ -12,6 +12,8 @@ package uk.ac.keele.csc20041.mct;
  */
 public class RunTestApplication {
     public static void main(String[] args) {
-        System.out.println("Running test... " + args.length);
+        System.out.println("Running test... " + args[0]);
+        System.out.println("Please enter the passcode");
+        
     }
 }
