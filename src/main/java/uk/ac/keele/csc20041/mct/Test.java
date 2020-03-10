@@ -2,6 +2,8 @@ package uk.ac.keele.csc20041.mct;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -38,6 +40,47 @@ public class Test implements JSONStreamAware {
         this.passcode = generatePasscode();
     }
 
+    //Reads the file and resolves the file name
+    private static FileReader resolveFileName (String path) throws FileNotFoundException {
+        try {
+            return new FileReader(path);
+        } catch (FileNotFoundException e){
+            return new FileReader (path + FILE_EXTENSION);
+        }
+    }
+    /*
+    
+    */
+    Test(String fileName) throws FileNotFoundException, IOException {
+        JSONObject json  =(JSONObject) JSONValue.parse(resolveFileName(fileName));
+        
+        //Gets the name by getting the file name minus the extension
+        
+        /*
+        
+        file.new with filename
+        
+        if file exists
+        this.name = filename - mctt
+        path = filename
+        
+        if file doesnt exist
+        this.name = filename
+        path = filename + mctt
+        */
+        
+        this.name = (String) fileName.substring(0,fileName.lastIndexOf('0'));
+        
+        
+        //Gets the time limit and passcode
+        this.timeLimit = (int) (long) json.get("time_limit");
+        this.passcode = (String) json.get("passcode");
+    }
+    
+    
+    
+    
+    
     //Get method to retrieve name
     public String getName() {
         return this.name;
