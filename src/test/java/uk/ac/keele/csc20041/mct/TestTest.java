@@ -5,6 +5,9 @@
  */
 package uk.ac.keele.csc20041.mct;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -15,6 +18,8 @@ import static org.junit.Assert.assertTrue;
  * @author Samual
  */
 public class TestTest {
+    private static final String TEST_JSON = "";
+    
     private static ArrayList<Question> questions() {
         ArrayList<Question> questions = new ArrayList(1);
         questions.add(new Question("Test Question 1", "A1", "A2", "A3", "A4", 'A'));
@@ -24,6 +29,36 @@ public class TestTest {
     private static Test build() {
         return new Test("Test Name", questions(), 60);
     }
+    
+    
+    public void testFromFullFileName() throws IOException {
+        
+        File tempFile = File.createTempFile("mct_test", ".mctt");
+        FileWriter writer = new FileWriter(tempFile);
+        writer.write(TEST_JSON);
+        writer.close();
+        Test instance = new Test(tempFile.getPath());
+        assertNotNull("Test created", instance);
+        assertEquals("Time limit parsed", 60, instance.getTimeLimit());
+        tempFile.delete();
+        
+    }
+    
+    public void testFromMinimalFileName() throws IOException {
+        File tempFile = File.createTempFile("mct_test", ".mctt");
+        String path = tempFile.getPath();
+        String pathWithoutExtension = path.substring(0, path.lastIndexOf('.'));
+        FileWriter writer = new FileWriter(tempFile);
+        writer.write(TEST_JSON);
+        writer.close();
+        Test instance = new Test(pathWithoutExtension);
+        assertNotNull("Test created", instance);
+        assertEquals("Time limit parsed", 60, instance.getTimeLimit());
+        tempFile.delete();
+        
+    }
+    
+    
     
     @org.junit.Test
     public void testCreate() {
