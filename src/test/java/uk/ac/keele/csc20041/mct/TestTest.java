@@ -30,7 +30,7 @@ public class TestTest {
         return new Test("Test Name", questions(), 60);
     }
     
-    
+    //Test for filename with extension
     public void testFromFullFileName() throws IOException {
         
         File tempFile = File.createTempFile("mct_test", ".mctt");
@@ -44,6 +44,7 @@ public class TestTest {
         
     }
     
+    //Test for file name without extension
     public void testFromMinimalFileName() throws IOException {
         File tempFile = File.createTempFile("mct_test", ".mctt");
         String path = tempFile.getPath();
