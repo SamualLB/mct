@@ -54,7 +54,7 @@ public class ExamTest {
     @Test
     public void testGeneratesTest() {
         Exam ins = build();
-        uk.ac.keele.csc20041.mct.Test test = ins.generateTest("Test Test!");
+        TestKlass test = ins.generateTest("Test Test!");
         assertNotNull("Test Generated", test);
         assertEquals("Name given", "Test Test!", test.getName());
         assertEquals("1 question", 1, test.getQuestions().size());

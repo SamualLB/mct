@@ -96,7 +96,7 @@ public class Exam {
      * Generate a randomised Test
      * 
      * @param name Name of the test
-     * @return Test with the same properties and a randomised subset of questions
+     * @return TestKlass with the same properties and a randomised subset of questions
      */
     public TestKlass generateTest(String name) {
         return new TestKlass(name, generateSample(), this.timeLimit);
