@@ -30,7 +30,7 @@ public class TestTest {
         return new Test("Test Name", questions(), 60);
     }
     
-    //Test for filename with extension
+    //Test for file name with extension
     public void testFromFullFileName() throws IOException {
         
         File tempFile = File.createTempFile("mct_test", ".mctt");

@@ -45,6 +45,7 @@ public class Test implements JSONStreamAware {
         
         // If the file does exist
         if (file.exists()) {
+            // Remove the extension for the name
             this.name = fileName.substring(0, fileName.lastIndexOf('.'));
         } else {
             // If the user enters a filename without the .mctt extension,
