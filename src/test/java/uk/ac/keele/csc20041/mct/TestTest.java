@@ -15,6 +15,8 @@ import static org.junit.Assert.assertTrue;
  * @author Samual
  */
 public class TestTest {
+    private static final String TEST_JSON = "{\"passcode\": \"123456\", \"time_limit\": 60,\"questions\": [{\"question\": \"Test Question 1\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"A\"},{\"question\": \"Test Question 2\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"B\"}]}";
+    
     private static ArrayList<Question> questions() {
         ArrayList<Question> questions = new ArrayList(1);
         questions.add(new Question("Test Question 1", "A1", "A2", "A3", "A4", 'A'));
