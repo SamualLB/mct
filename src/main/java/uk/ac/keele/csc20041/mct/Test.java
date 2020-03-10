@@ -40,47 +40,36 @@ public class Test implements JSONStreamAware {
         this.passcode = generatePasscode();
     }
 
-    //Reads the file and resolves the file name
-    private static FileReader resolveFileName (String path) throws FileNotFoundException {
-        try {
-            return new FileReader(path);
-        } catch (FileNotFoundException e){
-            return new FileReader (path + FILE_EXTENSION);
-        }
-    }
-    /*
-    
-    */
     Test(String fileName) throws FileNotFoundException, IOException {
-        JSONObject json  =(JSONObject) JSONValue.parse(resolveFileName(fileName));
+        File file = new File(fileName);
         
-        //Gets the name by getting the file name minus the extension
+        // If the file does exist
+        if (file.exists()) {
+            this.name = fileName.substring(0, fileName.lastIndexOf('.'));
+        } else {
+            // If the user enters a filename without the .mctt extension,
+            // the file does not exist so this path is taken
+            file = new File(fileName + FILE_EXTENSION);
+            this.name = fileName;
+            if (!file.exists())
+                // If the file still does not exist, an exceeption is thrown as
+                // the user may have entered the wrong name
+                throw new FileNotFoundException("Cannot find test file: " + fileName);
+        }
         
-        /*
-        
-        file.new with filename
-        
-        if file exists
-        this.name = filename - mctt
-        path = filename
-        
-        if file doesnt exist
-        this.name = filename
-        path = filename + mctt
-        */
-        
-        this.name = (String) fileName.substring(0,fileName.lastIndexOf('0'));
-        
+        JSONObject json = (JSONObject) JSONValue.parse(new FileReader(file));
         
         //Gets the time limit and passcode
         this.timeLimit = (int) (long) json.get("time_limit");
         this.passcode = (String) json.get("passcode");
+
+        this.questions = new ArrayList<>();
+        JSONArray qJSONArray = (JSONArray) json.get("questions");
+        for (Object qJSON : qJSONArray) {
+            this.questions.add(new Question((JSONObject) qJSON));
+        }
     }
-    
-    
-    
-    
-    
+
     //Get method to retrieve name
     public String getName() {
         return this.name;

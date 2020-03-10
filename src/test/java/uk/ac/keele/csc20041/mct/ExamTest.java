@@ -24,7 +24,6 @@ public class ExamTest {
     @Test
     public void testFromFullFileName() throws IOException {
         File tempFile = File.createTempFile("mct_test", ".mcte");
-        
         FileWriter writer = new FileWriter(tempFile);
         writer.write(TEST_JSON);
         writer.close();
