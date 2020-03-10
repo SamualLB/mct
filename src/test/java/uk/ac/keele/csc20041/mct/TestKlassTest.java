@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author Samual
  */
 public class TestKlassTest {
-    private static final String TEST_JSON = "{\"passcode\": \"123456\", \"time_limit\": 60,\"questions\": [{\"question\": \"Test Question 1\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"A\"},{\"question\": \"Test Question 2\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"B\"}]}";
+    private static final String TEST_JSON = "{\"passcode\": \"123456\", \"time_limit\": 60,\"questions\": [{\"question\": \"Test Question 1\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"A\"},{\"question\": \"Test Question 2\",\"a\": \"A1\",\"b\": \"A2\",\"c\": \"A3\",\"d\": \"A4\",\"answer\": \"B\"}], \"attempts\":{}}";
 
     private static ArrayList<Question> questions() {
         ArrayList<Question> questions = new ArrayList(1);

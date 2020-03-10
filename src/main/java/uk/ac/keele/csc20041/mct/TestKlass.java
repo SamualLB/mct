@@ -5,8 +5,12 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,6 +25,7 @@ public class TestKlass implements JSONStreamAware {
     private final ArrayList<Question> questions;
     private final int timeLimit;
     private final String passcode;
+    private final ArrayList<Attempt> attempts;
     
     private static final String PASSCODE_STRING = "0123456789";
     private static final int PASSCODE_LENGTH = 6;
@@ -36,6 +41,7 @@ public class TestKlass implements JSONStreamAware {
     public TestKlass(String name, ArrayList<Question> questions, int timeLimit) {
         this.name = name;
         this.questions = questions;
+        this.attempts = new ArrayList<>();
         this.timeLimit = timeLimit;
         this.passcode = generatePasscode();
     }
@@ -64,7 +70,11 @@ public class TestKlass implements JSONStreamAware {
                 throw new FileNotFoundException("Cannot find test file: " + fileName);
         }
         
+        boolean exists = file.exists();
+        
         JSONObject json = (JSONObject) JSONValue.parse(new FileReader(file));
+        
+        var test = new FileReader(file);
         
         //Gets the time limit and passcode
         this.timeLimit = (int) (long) json.get("time_limit");
@@ -75,6 +85,14 @@ public class TestKlass implements JSONStreamAware {
         for (Object qJSON : qJSONArray) {
             this.questions.add(new Question((JSONObject) qJSON));
         }
+        
+        this.attempts = new ArrayList<>();
+        JSONObject aJSONHash = (JSONObject) json.get("attempts");
+        Iterator iter = aJSONHash.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry ele = (Map.Entry) iter.next();
+            this.attempts.add(new Attempt(this, (JSONArray) ele.getValue(), (String) ele.getKey()));
+        }
     }
 
     //Get method to retrieve name
@@ -84,6 +102,13 @@ public class TestKlass implements JSONStreamAware {
 
     public ArrayList<Question> getQuestions() {
         return this.questions;
+    }
+    
+    public ArrayList<Question> cloneQuestions() throws CloneNotSupportedException {
+        ArrayList<Question> clone = new ArrayList<>(this.questions.size());
+        for (Question i : this.questions)
+            clone.add((Question) i.clone());
+        return clone;
     }
 
     //Get method to retrieve timelimit
@@ -121,6 +146,22 @@ public class TestKlass implements JSONStreamAware {
         writer.close();
         return true;
     }
+    
+    /**
+     * Save an attempt to this test's file
+     *
+     * @param att Attempt to add
+     * @return If save was successful
+     * @throws java.io.IOException
+     */
+    public boolean saveAttempt(Attempt att) throws IOException {
+        this.attempts.add(att);
+        File file = new File(this.name + FILE_EXTENSION);
+        FileWriter writer = new FileWriter(file);
+        writeJSONString(writer);
+        writer.close();
+        return true;
+    }
 
     @Override
     public void writeJSONString(Writer out) throws IOException {
@@ -130,8 +171,15 @@ public class TestKlass implements JSONStreamAware {
         JSONArray questionArr = new JSONArray();
         questionArr.addAll(this.questions);
         obj.put("questions", questionArr);
+        JSONObject attemptsObj = new JSONObject(); // TODO
+        for (Attempt attempt : this.attempts) {
+            attemptsObj.put(attempt.getStudentId(), attempt);
+        }
+        obj.put("attempts", attemptsObj);
         JSONValue.writeJSONString(obj, out);
     }
     
-    
+    public Attempt createAttempt(PrintStream out) {
+        return new Attempt(this, out);
+    }
 }

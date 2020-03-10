@@ -13,7 +13,7 @@ import org.json.simple.JSONValue;
  * 
  * @author Samual
  */
-public class Question implements JSONStreamAware {
+public class Question implements JSONStreamAware, Cloneable {
     private final String text;
     private final String answerA;
     private final String answerB;
@@ -127,7 +127,6 @@ public class Question implements JSONStreamAware {
         this.selectedAnswer = newAnswer;
     }
 
-
     @Override
     public void writeJSONString(Writer out) throws IOException {
         JSONObject obj = new JSONObject();
@@ -138,5 +137,9 @@ public class Question implements JSONStreamAware {
         obj.put("d", this.answerD);
         obj.put("answer", "" + this.correctAnswer);
         JSONValue.writeJSONString(obj, out);
+    }
+    
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
