@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Samual
  */
-public class TestTest {
+public class TestKlassTest {
     private static final String TEST_JSON = "";
     
     private static ArrayList<Question> questions() {
@@ -31,13 +31,14 @@ public class TestTest {
     }
     
     //Test for file name with extension
+    @org.junit.Test
     public void testFromFullFileName() throws IOException {
         
         File tempFile = File.createTempFile("mct_test", ".mctt");
         FileWriter writer = new FileWriter(tempFile);
         writer.write(TEST_JSON);
         writer.close();
-        Test instance = new Test(tempFile.getPath());
+        TestKlass instance = new TestKlass(tempFile.getPath());
         assertNotNull("Test created", instance);
         assertEquals("Time limit parsed", 60, instance.getTimeLimit());
         tempFile.delete();
@@ -45,6 +46,7 @@ public class TestTest {
     }
     
     //Test for file name without extension
+    @org.junit.Test
     public void testFromMinimalFileName() throws IOException {
         File tempFile = File.createTempFile("mct_test", ".mctt");
         String path = tempFile.getPath();
@@ -52,7 +54,7 @@ public class TestTest {
         FileWriter writer = new FileWriter(tempFile);
         writer.write(TEST_JSON);
         writer.close();
-        Test instance = new Test(pathWithoutExtension);
+        TestKlass instance = new TestKlass(pathWithoutExtension);
         assertNotNull("Test created", instance);
         assertEquals("Time limit parsed", 60, instance.getTimeLimit());
         tempFile.delete();

@@ -16,7 +16,7 @@ import org.json.simple.JSONValue;
 /**
  * @author Samual
  */
-public class Test implements JSONStreamAware {
+public class TestKlass implements JSONStreamAware {
     private final String name;
     private final ArrayList<Question> questions;
     private final int timeLimit;
@@ -33,14 +33,20 @@ public class Test implements JSONStreamAware {
      * @param questions Questions to ask on the test
      * @param timeLimit Time limit for the test
      */
-    public Test(String name, ArrayList<Question> questions, int timeLimit) {
+    public TestKlass(String name, ArrayList<Question> questions, int timeLimit) {
         this.name = name;
         this.questions = questions;
         this.timeLimit = timeLimit;
         this.passcode = generatePasscode();
     }
 
-    Test(String fileName) throws FileNotFoundException, IOException {
+    /**
+     * 
+     * @param fileName
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public TestKlass(String fileName) throws FileNotFoundException, IOException {
         File file = new File(fileName);
         
         // If the file does exist

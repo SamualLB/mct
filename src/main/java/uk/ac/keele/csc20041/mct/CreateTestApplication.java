@@ -20,7 +20,7 @@ public class CreateTestApplication {
         try {
             //Creates new exam and test objects
             Exam exam = new Exam(args[0]);
-            Test test = exam.generateTest(args[1]);
+            TestKlass test = exam.generateTest(args[1]);
             
             //If the file is already present
             if (!test.saveToFile()) {

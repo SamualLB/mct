@@ -98,8 +98,8 @@ public class Exam {
      * @param name Name of the test
      * @return Test with the same properties and a randomised subset of questions
      */
-    public Test generateTest(String name) {
-        return new Test(name, generateSample(), this.timeLimit);
+    public TestKlass generateTest(String name) {
+        return new TestKlass(name, generateSample(), this.timeLimit);
     }
 
     /**
