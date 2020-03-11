@@ -46,14 +46,15 @@ public class TestKlass implements JSONStreamAware {
     }
 
     /**
-     * 
-     * @param fileName
-     * @throws FileNotFoundException
-     * @throws IOException 
+     * Create from an existing file
+     *
+     * @param fileName Path of the file
+     * @throws FileNotFoundException File does not exist
+     * @throws IOException IO Error
      */
     public TestKlass(String fileName) throws FileNotFoundException, IOException {
         File file = new File(fileName);
-        
+
         // If the file does exist
         if (file.exists()) {
             // Remove the extension for the name
@@ -68,13 +69,9 @@ public class TestKlass implements JSONStreamAware {
                 // the user may have entered the wrong name
                 throw new FileNotFoundException("Cannot find test file: " + fileName);
         }
-        
-        boolean exists = file.exists();
-        
+
         JSONObject json = (JSONObject) JSONValue.parse(new FileReader(file));
-        
-        var test = new FileReader(file);
-        
+
         //Gets the time limit and passcode
         this.timeLimit = (int) (long) json.get("time_limit");
         this.passcode = (String) json.get("passcode");
@@ -84,7 +81,7 @@ public class TestKlass implements JSONStreamAware {
         for (Object qJSON : qJSONArray) {
             this.questions.add(new Question((JSONObject) qJSON));
         }
-        
+
         this.attempts = new ArrayList<>();
         JSONObject aJSONHash = (JSONObject) json.get("attempts");
         Iterator iter = aJSONHash.entrySet().iterator();
@@ -94,11 +91,20 @@ public class TestKlass implements JSONStreamAware {
         }
     }
 
-    //Get method to retrieve name
+    /**
+     * Name of this test
+     *
+     * @return Name as String
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Shallow clone of the questions
+     *
+     * @return ArrayList of questions
+     */
     public ArrayList<Question> getQuestions() {
         return this.questions;
     }
@@ -117,6 +123,14 @@ public class TestKlass implements JSONStreamAware {
         return null;
     }
     
+    /**
+     * Make a clone of the questions
+     *
+     * This allows each Attempt to have its own modifiable questions
+     *
+     * @return Cloned questions
+     * @throws CloneNotSupportedException Should not happen
+     */
     public ArrayList<Question> cloneQuestions() throws CloneNotSupportedException {
         ArrayList<Question> clone = new ArrayList<>(this.questions.size());
         for (Question i : this.questions)
@@ -124,17 +138,24 @@ public class TestKlass implements JSONStreamAware {
         return clone;
     }
 
-    //Get method to retrieve timelimit
+    /**
+     * Time limit of this test in seconds
+     *
+     * @return Number of seconds
+     */
     public int getTimeLimit() {
         return this.timeLimit;
     }
 
-    //Get method to retrieve passcode
+    /**
+     * Get the correct passcode for this test
+     *
+     * @return Passcode as a String
+     */
     protected String getPasscode() {
         return this.passcode;
     }
 
-    //Generates the passcode
     private String generatePasscode() {
         Random r = new Random();
         StringBuilder b = new StringBuilder(PASSCODE_LENGTH);
@@ -176,6 +197,19 @@ public class TestKlass implements JSONStreamAware {
         return true;
     }
 
+    /**
+     * Write this Test as JSON
+     *
+     * Includes individual properties including questions and the attempts
+     *
+     * Questions are a simple JSON Array
+     *
+     * Attempts are an object with the students' ids as keys and an array
+     * of single-letter string answers
+     *
+     * @param out Writer
+     * @throws IOException On IO Error
+     */
     @Override
     public void writeJSONString(Writer out) throws IOException {
         JSONObject obj = new JSONObject();
@@ -184,7 +218,7 @@ public class TestKlass implements JSONStreamAware {
         JSONArray questionArr = new JSONArray();
         questionArr.addAll(this.questions);
         obj.put("questions", questionArr);
-        JSONObject attemptsObj = new JSONObject(); // TODO
+        JSONObject attemptsObj = new JSONObject();
         for (Attempt attempt : this.attempts) {
             attemptsObj.put(attempt.getStudentId(), attempt);
         }

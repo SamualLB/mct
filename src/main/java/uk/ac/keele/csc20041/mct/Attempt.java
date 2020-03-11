@@ -380,6 +380,9 @@ public class Attempt implements JSONStreamAware {
         }
     }
     
+    /**
+     * Loop until the correct passcode has been entered
+     */
     public void readPasscode() {
         out.println(SEPARATOR);
         out.println("Starting test " + this.test.getName());
@@ -394,6 +397,9 @@ public class Attempt implements JSONStreamAware {
         }
     }
     
+    /**
+     * Loop until ready has been entered
+     */
     public void readReady() {
         out.println(SEPARATOR);
         out.println("Test " + this.test.getName() + " ready to begin.");
@@ -416,6 +422,11 @@ public class Attempt implements JSONStreamAware {
         return test.matches("\\d{8}");
     }
     
+    /**
+     * Safely read a line of input
+     *
+     * @return Input or empty on error
+     */
     public String readLine() {
         try {
             return in.readLine();
@@ -437,6 +448,16 @@ public class Attempt implements JSONStreamAware {
         arr[j] = tmp;
     }
 
+    /**
+     * Output this Attempt as JSON
+     *
+     * Output simply as an array of answers
+     * 
+     * `["A","B","C","D","A"]`
+     *
+     * @param out Output writer
+     * @throws IOException IO error
+     */
     @Override
     public void writeJSONString(Writer out) throws IOException {
         JSONArray arr = new JSONArray();
