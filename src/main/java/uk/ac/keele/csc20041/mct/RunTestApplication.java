@@ -33,13 +33,14 @@ public class RunTestApplication {
         }
         Attempt att = test.createAttempt(System.out);
         
-        att.run();
-        
-        try {
-            att.save();
-        } catch (IOException ex) {
-            System.err.println("Error saving attempt");
-            System.exit(1);
+        // If it completed
+        if (att.run()) {
+            try {
+                att.save();
+            } catch (IOException ex) {
+                System.err.println("Error saving attempt");
+                System.exit(1);
+            }
         }
     }
 

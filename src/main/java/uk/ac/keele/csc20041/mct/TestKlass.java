@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -102,6 +101,20 @@ public class TestKlass implements JSONStreamAware {
 
     public ArrayList<Question> getQuestions() {
         return this.questions;
+    }
+    
+    /**
+     * Find attempt by student id
+     *
+     * @param id Student id
+     * @return The Attempt or null
+     */
+    public Attempt getAttempt(String id) {
+        for (Attempt a : this.attempts) {
+            if (a.getStudentId().equals(id))
+                return a;
+        }
+        return null;
     }
     
     public ArrayList<Question> cloneQuestions() throws CloneNotSupportedException {

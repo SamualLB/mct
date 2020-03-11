@@ -191,9 +191,15 @@ public class Attempt implements JSONStreamAware {
         return nanoSeconds <= 0;
     }
     
-    public void run() {
+    public boolean run() {
         // Enter student number
         readStudentNumber();
+        // Check student ID has not already made an attempt
+        if (test.getAttempt(this.studentId) != null) {
+            out.println("You have already made an attempt.");
+            out.println(SEPARATOR);
+            return false;
+        }
         // Enter passcode
         readPasscode();
         // Enter 'ready' to begin
@@ -265,6 +271,7 @@ public class Attempt implements JSONStreamAware {
         if (!exitedEarly)
             out.println("Time elapsed.");
         drawTestOver();
+        return true;
     }
     
     /**
