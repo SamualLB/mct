@@ -72,6 +72,11 @@ public class Attempt implements JSONStreamAware {
         this.studentId = id;
     }
     
+    /**
+     * Local, cloned copy of questions
+     *
+     * @return ArrayList of questions
+     */
     public final ArrayList<Question> getQuestions() {
         return this.questions;
     }
@@ -95,6 +100,20 @@ public class Attempt implements JSONStreamAware {
                 return false;
         }
         return true;
+    }
+    
+    /**
+     * Number of correct answers given
+     *
+     * @return Sum of correct answers
+     */
+    public final int noCorrect() {
+        int score = 0;
+        for (Question q : getQuestions()) {
+            if (q.correct())
+                score++;
+        }
+        return score;
     }
     
     /**
