@@ -122,7 +122,7 @@ public class Attempt implements JSONStreamAware {
      * @return The number of question in the test
      */
     public final int noQuestions() {
-        return this.questionMap.length;
+        return this.questions.size();
     }
     
     /**
