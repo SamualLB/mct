@@ -110,6 +110,15 @@ public class TestKlass implements JSONStreamAware {
     }
     
     /**
+     * Number of questions in this test
+     *
+     * @return Number of questions
+     */
+    public int noQuestions() {
+        return this.questions.size();
+    }
+    
+    /**
      * Find attempt by student id
      *
      * @param id Student id

@@ -56,10 +56,10 @@ public class ReviewTestApplication {
         System.out.println("Result summary for " + test.getName());
         // Student ID | Mark | Result
         String[] headers = { "Student ID", "Mark", "Result" };
-        String[][] results = new String[test.noAttempts()][3];
+        String[][] results = new String[test.noAttempts()][headers.length];
         int i = 0;
         for (Attempt att : test.getAttempts()) {
-            String[] arr = new String[3];
+            String[] arr = new String[headers.length];
             arr[0] = att.getStudentId();
             arr[1] = att.result();
             arr[2] = att.resultName();
@@ -76,9 +76,38 @@ public class ReviewTestApplication {
      * '`test_name` student `student_id`'
      */
     public static void attempt(String[] args) {
-
+        TestKlass test;
+        Attempt att;
+        try {
+            test = new TestKlass(args[0]);
+            att = test.getAttempt(args[2]);
+        } catch (FileNotFoundException ex) {
+            System.err.println("Test " + args[0] + " cannot be found");
+            return;
+        } catch (IOException ex) {
+            System.err.println("System error.");
+            return;
+        }
+        System.out.println("Results for student " + args[2] + " taking test " + test.getName());
         System.out.println(SEPARATOR);
-        String[] headers = {"Student ID", "Mark", "Result"};
+        // Question | Correct | Given | Actual
+        //
+        // Q1 | NO | C | B
+        String[] headers = {"Question", "Correct", "Given", "Actual"};
+        String[][] results = new String[att.noQuestions()][headers.length];
+        int i = 0;
+        for (Question q : att.getQuestions()) {
+            String[] arr = new String[headers.length];
+            arr[0] = "Q" + (i + 1);
+            arr[1] = q.correctText();
+            Character ans = q.getSelectedAnswer();
+            arr[2] = (ans == null) ? "-" : ans.toString();
+            arr[3] = "" + q.getCorrectAnswer();
+            results[i] = arr;
+            i++;
+        }
+        table(headers, results);
+        System.out.println(SEPARATOR);
     }
 
     /**
@@ -87,8 +116,39 @@ public class ReviewTestApplication {
      * '`test_name` question'
      */
     public static void questions(String[] args) {
+        TestKlass test;
+        try {
+            test = new TestKlass(args[0]);
+        } catch (FileNotFoundException ex) {
+            System.err.println("Test " + args[0] + " cannot be found");
+            return;
+        } catch (IOException ex) {
+            System.err.println("System error.");
+            return;
+        }
+        System.out.println("Result summary for " + test.getName());
         System.out.println(SEPARATOR);
+        // Question | Mark
+        //
+        // Q1 | 1/2
+        // Q2 | 2/2
         String[] headers = {"Question", "Mark"};
+        String[][] results = new String[test.noQuestions()][headers.length];
+        int i = 0;
+        for (Question q : test.getQuestions()) {
+            String[] arr = new String[headers.length];
+            arr[0] = "Q" + (i + 1);
+            int noCorrect = 0;
+            for (int n = 0; n < test.noAttempts(); n++) {
+                if (test.getAttempts().get(n).getQuestions().get(i).correct())
+                    noCorrect++;
+            }
+            arr[1] = noCorrect + "/" + test.noAttempts();
+            results[i] = arr;
+            i++;
+        }
+        table(headers, results);
+        System.out.println(SEPARATOR);
     }
     
     /**

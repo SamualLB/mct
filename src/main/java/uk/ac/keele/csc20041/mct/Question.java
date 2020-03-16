@@ -72,6 +72,15 @@ public class Question implements JSONStreamAware, Cloneable {
             return false;
         return this.correctAnswer == this.selectedAnswer;
     }
+    
+    /**
+     * @return String representation of correctness
+     */
+    public String correctText() {
+        if (correct())
+            return "YES";
+        return "NO";
+    }
 
     //Get method for retrieving the question text
     public String getQuestion() {
