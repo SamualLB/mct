@@ -157,6 +157,76 @@ public class ReviewTestApplication {
      * '`test_name` question `question_no`'
      */
     public static void question(String[] args) {
+        TestKlass test;
+        Integer qNo;
+        int qIndex;
+        try {
+            test = new TestKlass(args[0]);
+            qNo = Integer.parseInt(args[2]);
+            qIndex = qNo - 1;
+        } catch (FileNotFoundException ex) {
+            System.err.println("Test " + args[0] + " cannot be found");
+            return;
+        } catch (IOException ex) {
+            System.err.println("System error.");
+            return;
+        }
+        int correctAttempts = 0;
+        int aCount = 0;
+        int bCount = 0;
+        int cCount = 0;
+        int dCount = 0;
+        int nullCount = 0;
+        for (Attempt att : test.getAttempts()) {
+            if (att.getQuestions().get(qIndex).correct())
+                correctAttempts++;
+            Character nullable = att.getQuestions().get(qIndex).getSelectedAnswer();
+            if (nullable == null) {
+                nullCount++;
+                continue;
+            }
+            switch (nullable) {
+                case 'A':
+                    aCount++;
+                    break;
+                case 'B':
+                    bCount++;
+                    break;
+                case 'C':
+                    cCount++;
+                    break;
+                case 'D':
+                    dCount++;
+                    break;
+            }
+        }
+        System.out.println(SEPARATOR);
+        System.out.println("Results for " + test.getName());
+        System.out.println("Question " + qNo + "/" + test.noQuestions());
+        System.out.println("Mark " + correctAttempts + "/" + test.noAttempts());
+        System.out.println();
+        System.out.println(test.getQuestions().get(qIndex).getQuestion());
+        System.out.println();
+        System.out.println("A: " + test.getQuestions().get(qIndex).getAnswerA() + " (" + aCount + ")");
+        System.out.println("B: " + test.getQuestions().get(qIndex).getAnswerB() + " (" + bCount + ")");
+        System.out.println("C: " + test.getQuestions().get(qIndex).getAnswerC() + " (" + cCount + ")");
+        System.out.println("D: " + test.getQuestions().get(qIndex).getAnswerD() + " (" + dCount + ")");
+        System.out.println("   No answer given. (" + nullCount + ")");
+        System.out.println();
+
+        String[] headers = {"Student ID", "Choice", "Correct"};
+        String[][] results = new String[test.noAttempts()][headers.length];
+        int i = 0;
+        for (Attempt att : test.getAttempts()) {
+            String[] arr = new String[headers.length];
+            arr[0] = att.getStudentId();
+            Character choice = att.getQuestions().get(qIndex).getSelectedAnswer();
+            arr[1] = (choice == null) ? "none" : choice.toString();
+            arr[2] = att.getQuestions().get(qIndex).correctText();
+            results[i] = arr;
+            i++;
+        }
+        table(headers, results);
         System.out.println(SEPARATOR);
     }
 
