@@ -126,6 +126,15 @@ public class Attempt implements JSONStreamAware {
     }
     
     /**
+     * Did the the attempt get at least 40% correct?
+     *
+     * @return If student passed
+     */
+    public final boolean passed() {
+        return ((double) noCorrect() / noQuestions()) >= 0.4;
+    }
+    
+    /**
      * Get the corresponding, mapped question
      * 
      * This is used during the test as the method for randomising the order
