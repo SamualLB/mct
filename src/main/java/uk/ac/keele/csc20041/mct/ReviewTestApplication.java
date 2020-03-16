@@ -13,7 +13,7 @@ public class ReviewTestApplication {
     /**
      * Review controller
      *
-     * Just redirectes to an individual controller
+     * Just redirects to an individual controller
      *
      * 'mct review' to get here
      *
@@ -73,6 +73,12 @@ public class ReviewTestApplication {
      */
     public static void attempt(String[] args) {
 
+        System.out.println(SEPARATOR);
+        String[] headers = {"Student ID", "Mark", "Result"};
+        String[] res1 = {"12345678", "4/5", "PASS"};
+        table(headers, res1);
+        System.out.println(SEPARATOR);
+    
     }
 
     /**
@@ -81,7 +87,11 @@ public class ReviewTestApplication {
      * '`test_name` question'
      */
     public static void questions(String[] args) {
-
+        System.out.println(SEPARATOR);
+        String[] headers = {"Question", "Mark"};
+        String[] res1 = {"1", "Correct"};
+        table(headers, res1);
+        System.out.println(SEPARATOR);
     }
     
     /**
@@ -90,7 +100,9 @@ public class ReviewTestApplication {
      * '`test_name` question `question_no`'
      */
     public static void question(String[] args) {
+        System.out.println(SEPARATOR);
         
+        System.out.println(SEPARATOR);
     }
     
     private static void table(String[] headers, String[] ... body) {
