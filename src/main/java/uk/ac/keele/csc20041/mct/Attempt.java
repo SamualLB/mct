@@ -135,6 +135,29 @@ public class Attempt implements JSONStreamAware {
     }
     
     /**
+     * Results displayed as a string
+     * 
+     * 1/5    1/10    4/5
+     *
+     * @return String representation of results
+     */
+    public String result() {
+        return noCorrect() + "/" + noQuestions();
+    }
+    
+    /**
+     * String representation of pass
+     *
+     * @return String pass or fail
+     */
+    public String resultName() {
+        if (passed())
+            return "PASS";
+        else
+            return "FAIL";
+    }
+    
+    /**
      * Get the corresponding, mapped question
      * 
      * This is used during the test as the method for randomising the order

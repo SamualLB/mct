@@ -123,6 +123,14 @@ public class TestKlass implements JSONStreamAware {
         return null;
     }
     
+    public ArrayList<Attempt> getAttempts() {
+        return this.attempts;
+    }
+    
+    public int noAttempts() {
+        return this.attempts.size();
+    }
+    
     /**
      * Make a clone of the questions
      *

@@ -54,15 +54,19 @@ public class ReviewTestApplication {
         }
         System.out.println(SEPARATOR);
         System.out.println("Result summary for " + test.getName());
-        // table
         // Student ID | Mark | Result
-        // Iterate through attempts
-        // Get mark
-        // TODO: create result method (>= 40%)
-        String[] headers = {"Student ID", "Mark", "Result"};
-        String[] res1 = {"12345678", "4/5", "PASS"};
-        String[] res2 = {"12345678", "1/5", "FAIL"};
-        table(headers, res1, res2);
+        String[] headers = { "Student ID", "Mark", "Result" };
+        String[][] results = new String[test.noAttempts()][3];
+        int i = 0;
+        for (Attempt att : test.getAttempts()) {
+            String[] arr = new String[3];
+            arr[0] = att.getStudentId();
+            arr[1] = att.result();
+            arr[2] = att.resultName();
+            results[i] = arr;
+            i++;
+        }
+        table(headers, results);
         System.out.println(SEPARATOR);
     }
 
@@ -75,10 +79,6 @@ public class ReviewTestApplication {
 
         System.out.println(SEPARATOR);
         String[] headers = {"Student ID", "Mark", "Result"};
-        String[] res1 = {"12345678", "4/5", "PASS"};
-        table(headers, res1);
-        System.out.println(SEPARATOR);
-    
     }
 
     /**
@@ -89,9 +89,6 @@ public class ReviewTestApplication {
     public static void questions(String[] args) {
         System.out.println(SEPARATOR);
         String[] headers = {"Question", "Mark"};
-        String[] res1 = {"1", "Correct"};
-        table(headers, res1);
-        System.out.println(SEPARATOR);
     }
     
     /**
@@ -101,14 +98,12 @@ public class ReviewTestApplication {
      */
     public static void question(String[] args) {
         System.out.println(SEPARATOR);
-        
-        System.out.println(SEPARATOR);
     }
-    
-    private static void table(String[] headers, String[] ... body) {
+
+    private static void table(String[] headers, String[][] body) {
         if (headers.length < 1)
             return;
-        
+
         int[] col_widths = new int[headers.length];
         for (int i = 0; i < headers.length; i++) {
             col_widths[i] = headers[i].length();
@@ -117,11 +112,11 @@ public class ReviewTestApplication {
                     col_widths[i] = body[j][i].length();
             }
         }
-        
+
         // Add 2 spaces around each cell
         for (int i = 0; i < col_widths.length; i++)
             col_widths[i] += 2;
-        
+
         // Top header border
         System.out.print('┏');
         for (int i = 0; i < headers.length; i++) {
@@ -131,13 +126,13 @@ public class ReviewTestApplication {
             else
                 System.out.print('┳');
         }
-        
+
         // Header text
         for (int i = 0; i < headers.length; i++) {
             System.out.print('┃' + cell(headers[i], col_widths[i]));
         }
         System.out.println('┃');
-        
+
         // Bottom header border
         System.out.print('┡');
         for (int i = 0; i < headers.length; i++) {
@@ -147,7 +142,7 @@ public class ReviewTestApplication {
             else
                 System.out.print('╇');
         }
-        
+
         // Data text
         for (int n = 0; n < body.length; n++) {
             // for each line
